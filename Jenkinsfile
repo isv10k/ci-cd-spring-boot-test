@@ -14,14 +14,19 @@ pipeline {
             }
         }
         stage('Run') {
-            environment {
-                JENKINS_NODE_COOKIE = 'dontkill'
-            }
+//             environment {
+//                 JENKINS_NODE_COOKIE = 'dontkill'
+//             }
             steps {
                 script {
 //                 sh "pid=\$(lsof -i:8081 -t); [ -z \$pid ] && echo 'spring app was not running' || (kill -TERM \$pid || kill -KILL \$pid)"
-                    sh "pid=\$(lsof -i:8081 -t); [ -z \$pid ] && echo 'spring app was not running' || (kill -TERM \$pid || kill -KILL \$pid)"
-                    sh 'nohup ./mvnw spring-boot:run &'
+//                 sh "pid=\$(lsof -i:8081 -t); [ -z \$pid ] && echo 'spring app was not running' || (kill -TERM \$pid || kill -KILL \$pid)"
+//                 sh 'nohup ./mvnw spring-boot:run &'
+                    sh "pid=\$(lsof -i:8081 -t); kill -TERM \$pid "
+                        + "|| kill -KILL \$pid"
+                    withEnv(['JENKINS_NODE_COOKIE=dontkill']) {
+                        sh 'nohup ./mvnw spring-boot:run &'
+                    }
                 }
             }
         }

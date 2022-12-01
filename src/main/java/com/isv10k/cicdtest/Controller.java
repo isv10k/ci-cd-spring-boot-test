@@ -18,9 +18,7 @@ public class Controller {
 
     @GetMapping("/")
     public String root() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Go to /api\n")
-                .append("or /api?name=Name");
-        return sb.toString();
+        return "Go to /api\n" +
+                "or /api?name=Name";
     }
 }

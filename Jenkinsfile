@@ -18,8 +18,11 @@ pipeline {
                 JENKINS_NODE_COOKIE = 'dontkill'
             }
             steps {
-                sh "pid=\$(lsof -i:8081 -t); [ -z \$pid ] && echo 'spring app was not running' || (kill -TERM \$pid || kill -KILL \$pid)"
-                sh 'nohup ./mvnw spring-boot:run &'
+                script {
+//                 sh "pid=\$(lsof -i:8081 -t); [ -z \$pid ] && echo 'spring app was not running' || (kill -TERM \$pid || kill -KILL \$pid)"
+                    sh "pid=\$(lsof -i:8081 -t); [ -z \$pid ] && echo 'spring app was not running' || (kill -TERM \$pid || kill -KILL \$pid)"
+                    sh 'nohup ./mvnw spring-boot:run &'
+                }
             }
         }
     }

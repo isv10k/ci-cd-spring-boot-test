@@ -10,12 +10,16 @@ pipeline {
         stage('Build') {
             steps {
 //                 sh 'mvn -B -DskipTests clean package'
-                sh './mvnw clean install'
+                sh './mvnw clean install -DskipTests'
             }
         }
         stage('Run') {
+            environment {
+                JENKINS_NODE_COOKIE = 'dontkill'
+            }
             steps {
-                sh './mvnw spring-boot:run'
+                sh 'pid=\$(lsof -i:8081 -t); kill -TERM \$pid || kill -KILL \$pid'
+                sh 'nohup ./mvnw spring-boot:run &'
             }
         }
     }

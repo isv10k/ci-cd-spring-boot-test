@@ -15,4 +15,12 @@ public class Controller {
             return "Hello " + name + "!";
         }
     }
+
+    @GetMapping("/")
+    public String root() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Go to /api\n")
+                .append("or /api?name=Name");
+        return sb.toString();
+    }
 }

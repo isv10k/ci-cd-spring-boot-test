@@ -19,7 +19,7 @@ pipeline {
             }
             steps {
                 sh "pid=\$(lsof -i:8081 -t); "
-                + "[ -z $pid ] && echo "spring app was not running" "
+                + "[ -z $pid ] && echo 'spring app was not running' "
                 + "|| (kill -TERM \$pid || kill -KILL \$pid)"
                 sh 'nohup ./mvnw spring-boot:run &'
             }

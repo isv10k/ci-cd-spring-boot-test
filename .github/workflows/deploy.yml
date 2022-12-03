@@ -27,8 +27,8 @@ jobs:
       - name: Test of  Unit Test tmp
         run: mvn --batch-mode --update-snapshots package
 
-#      - name: Unit Tests
-#        run: mvn clean package
+      #      - name: Unit Tests
+      #        run: mvn clean package
 
       - name: Rename the artifact
         #run: cp target/ci-cd-test-0.0.1-SNAPSHOT.jar ci-cd-test-${{ github.sha }}.jar
@@ -38,7 +38,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: ci-cd-test
-#          path: ci-cd-test-${{ github.sha }}.jar
+          #          path: ci-cd-test-${{ github.sha }}.jar
           path: ci-cd-test.jar
 
   deploy:
@@ -64,15 +64,15 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-#            pid=`ps aux | grep "[c]icd-demo.jar" | awk '{print $2}'`
-#            if [ "$pid" == "" ]; then
-#              echo "Process not found"
-#            else
-#              kill -9 $pid
-#            fi
-            if [ ! -d app ]; then 
-                    mkdir app
+            if [ ! -d app ]; then
+              mkdir app
             fi
 
       - name: deploy
         run: ls ci-cd-test*.jar
+        #            pid=`ps aux | grep "[c]icd-demo.jar" | awk '{print $2}'`
+        #            if [ "$pid" == "" ]; then
+        #              echo "Process not found"
+        #            else
+        #              kill -9 $pid
+        #            fi

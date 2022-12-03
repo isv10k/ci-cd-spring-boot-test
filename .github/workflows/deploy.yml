@@ -38,7 +38,7 @@ jobs:
 
   deploy:
     runs-on: self-hosted
-    needs: run-unit-test
+    needs: run-unit-tests
     steps:
       - name: Get the artifact
         uses: actions/download-artifact@v3

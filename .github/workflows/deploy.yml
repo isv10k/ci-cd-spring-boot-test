@@ -19,13 +19,13 @@ jobs:
           java-version: 17
           distribution: 'adopt'
 
-#      - name: Setup Maven
-#        uses: stCarolas/setup-maven@v4.5
-#        with:
-#          maven-version: 3.8.2
+      - name: Setup Maven
+        uses: stCarolas/setup-maven@v4.5
+        with:
+          maven-version: 3.8.2
 
       - name: Test of  Unit Test tmp
-        run: ./mvn -v
+        run: mvn --batch-mode --update-snapshots package
 
 #      - name: Unit Tests
 #        run: mvn clean package

@@ -8,7 +8,8 @@ ENV RUNNER_ALLOW_RUNASROOT=1
 
 RUN curl -o actions-runner-linux-x64-2.299.1.tar.gz -L https://github.com/actions/runner/releases/download/v2.299.1/actions-runner-linux-x64-2.299.1.tar.gz && tar zxf ./actions-runner-linux-x64-2.299.1.tar.gz
 
-RUN apt install -y netcat
+# hmm
+RUN apt install -y netcat ssh
 
 RUN ./bin/installdependencies.sh
 

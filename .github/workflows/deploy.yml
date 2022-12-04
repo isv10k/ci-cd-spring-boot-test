@@ -76,7 +76,7 @@ jobs:
 
       - name: Stop App
         run: |
-          ssh server << END 
+          ssh server /bin/bash << 'END' 
             pid=`ps aux | grep "ci-cd-test.jar" | grep -v grep | awk '{print $2}'`
             if [ "$pid" == "" ]; then
               echo "Process not found"

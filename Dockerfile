@@ -14,5 +14,6 @@ RUN ./config.sh --url https://github.com/isv10k/ci-cd-spring-boot-test --token $
 
 CMD ["./run.sh"]
 
+# docker build . -t github_actions_runner --build-arg TOKEN=
 # docker run -d --log-opt mode=non-blocking github_actions_runner
 # docker logs --follow

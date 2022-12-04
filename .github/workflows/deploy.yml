@@ -57,16 +57,35 @@ jobs:
                   echo "SSH not available..."
           done; echo "SSH ready!"
 
-      - name: Stop App
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_KEY }}
-          script: |
-            if [ ! -d app ]; then
-              mkdir app
-            fi
+      - name: Configure SSH
+        run: |
+          mkdir -p ~/.ssh/
+          echo "$SSH_KEY" > ~/.ssh/github-actions-key
+          chmod 600 ~/.ssh/github-actions-key
+          cat >>~/.ssh/config <<END
+          Host server
+            HostName $SSH_HOST
+            User $SSH_USER
+            IdentityFile ~/.ssh/github-actions-key
+            StrictHostKeyChecking no
+          END
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+
+      - name: List home directory
+        run: ssh server 'ls -la'
+#      - name: Stop App
+#        uses: appleboy/ssh-action@master
+#        with:
+#          host: ${{ secrets.SSH_HOST }}
+#          username: ${{ secrets.SSH_USER }}
+#          key: ${{ secrets.SSH_KEY }}
+#          script: |
+#            if [ ! -d app ]; then
+#              mkdir app
+#            fi
 
       - name: deploy
         run: ls ci-cd-test*.jar

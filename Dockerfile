@@ -11,6 +11,7 @@ RUN curl -o actions-runner-linux-x64-2.299.1.tar.gz -L https://github.com/action
 # hmm
 RUN apt-get install -y netcat ssh
 RUN apt-get install -y rsync
+RUN apt-get install -y maven
 
 RUN ./bin/installdependencies.sh
 

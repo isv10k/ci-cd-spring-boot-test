@@ -26,7 +26,8 @@ jobs:
 
       - name: Test of  Unit Test tmp
 #        run: ./mvnw --batch-mode --update-snapshots -X package
-        run: mvn -X clean package -DskipTests=true # sometimes hangs idk
+        #run: mvn -X clean package -DskipTests=true # sometimes hangs idk
+        run: mvn --batch-mode --update-snapshots -X -DskipTests=true package
 
       #      - name: Unit Tests
       #        run: mvn clean package

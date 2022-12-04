@@ -22,7 +22,7 @@ jobs:
       - name: Setup Maven
         uses: stCarolas/setup-maven@v4.5
         with:
-          maven-version: 3.8.2
+          maven-version: 3.8.6
 
       - name: Test of  Unit Test tmp
         run: ./mvnw --batch-mode --update-snapshots -X package

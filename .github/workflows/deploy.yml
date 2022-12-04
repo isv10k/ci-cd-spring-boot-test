@@ -25,7 +25,7 @@ jobs:
           maven-version: 3.8.2
 
       - name: Test of  Unit Test tmp
-        run: mvn clean package
+        run: mvn clean package -DskipTests=true
 
       #      - name: Unit Tests
       #        run: mvn clean package
@@ -77,7 +77,7 @@ jobs:
       - name: Stop App
         run: |
           ssh server << END 
-            pid=`ps aux | grep "ci-cd-test.jar" | awk '{print $2}'`
+            pid=pid=`ps aux | grep "ci-cd-test.jar" | grep -v grep | awk '{print $2}'`
             if [ "$pid" == "" ]; then
               echo "Process not found"
             else
@@ -94,3 +94,4 @@ jobs:
 
       - name: Start App
         run: ssh server "nohup java -jar ~/app/ci-cd-test.jar > output.$(date --iso).log 2>&1 &"
+

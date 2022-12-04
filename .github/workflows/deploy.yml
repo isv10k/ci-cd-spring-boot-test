@@ -62,7 +62,7 @@ jobs:
           mkdir -p ~/.ssh/
           echo "$SSH_KEY" > ~/.ssh/github-actions-key
           chmod 600 ~/.ssh/github-actions-key
-          cat >>~/.ssh/config <<END
+          cat >>~/.ssh/config << END
           Host server
             HostName $SSH_HOST
             User $SSH_USER
@@ -74,25 +74,23 @@ jobs:
           SSH_USER: ${{ secrets.SSH_USER }}
           SSH_KEY: ${{ secrets.SSH_KEY }}
 
-      - name: List home directory
-        run: ssh server 'ls -la'
-#      - name: Stop App
-#        uses: appleboy/ssh-action@master
-#        with:
-#          host: ${{ secrets.SSH_HOST }}
-#          username: ${{ secrets.SSH_USER }}
-#          key: ${{ secrets.SSH_KEY }}
-#          script: |
-#            if [ ! -d app ]; then
-#              mkdir app
-#            fi
+      - name: Stop App
+        run: |
+          ssh server << END 
+            pid=`ps aux | grep "ci-cd-test.jar" | awk '{print $2}'`
+            if [ "$pid" == "" ]; then
+              echo "Process not found"
+            else
+              kill -TERM $pid || kill -KILL $pid
+            fi
+            if [ ! -d app ]; then
+              mkdir app
+            fi
+          END
 
-      - name: deploy
-        run: ls ci-cd-test*.jar
-        #            pid=`ps aux | grep "[c]icd-demo.jar" | awk '{print $2}'`
-        #            if [ "$pid" == "" ]; then
-        #              echo "Process not found"
-        #            else
-        #              kill -9 $pid
-        #            fi
-        #
+      - name: Deploy JAR
+        run: |
+          rsync -v ci-cd-test.jar server:~/app
+
+      - name: Start App
+        run: ssh server "nohup java -jar ~/app/ci-cd-test.jar > output.$(date --iso).log 2>&1 &"

@@ -19,6 +19,6 @@ public class Controller {
     @GetMapping("/")
     public String root() {
         return "Go to /api\n" +
-                "or /api?name=Name changed again";
+                "or /api?name=Name changed again, and again";
     }
 }

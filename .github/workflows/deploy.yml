@@ -12,7 +12,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-
       - name: Setup Java
         uses: actions/setup-java@v3
         with:
@@ -20,30 +19,14 @@ jobs:
           distribution: 'temurin'
           architecture: aarch64
           overwrite-settings: false
-
-
-#      - name: Setup Maven
-#        uses: stCarolas/setup-maven@v4.5
-#        with:
-#          maven-version: 3.8.6
-
       - name: Test of  Unit Test tmp
-#        run: ./mvnw --batch-mode --update-snapshots -X package
-        #run: mvn -X clean package -DskipTests=true # sometimes hangs idk
         run: ./mvnw --batch-mode --update-snapshots -X -DskipTests=true package
-
-      #      - name: Unit Tests
-      #        run: mvn clean package
-
       - name: Rename the artifact
-        #run: cp target/ci-cd-test-0.0.1-SNAPSHOT.jar ci-cd-test-${{ github.sha }}.jar
         run: cp target/ci-cd-test-0.0.1-SNAPSHOT.jar ci-cd-test.jar
-
       - name: Save the artifact
         uses: actions/upload-artifact@v3
         with:
           name: ci-cd-test
-          #          path: ci-cd-test-${{ github.sha }}.jar
           path: ci-cd-test.jar
 
   deploy:
@@ -54,14 +37,12 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: ci-cd-test
-
       - name: Wait for SSH
         run: |
           while ! nc -w1 -z ${{ secrets.SSH_HOST }} 22; do
                   sleep 1
                   echo "SSH not available..."
           done; echo "SSH ready!"
-
       - name: Configure SSH
         run: |
           mkdir -p ~/.ssh/
@@ -78,7 +59,6 @@ jobs:
           SSH_HOST: ${{ secrets.SSH_HOST }}
           SSH_USER: ${{ secrets.SSH_USER }}
           SSH_KEY: ${{ secrets.SSH_KEY }}
-
       - name: Stop App
         run: |
           ssh server /bin/bash << 'END' 
@@ -92,11 +72,9 @@ jobs:
               mkdir app
             fi
           END
-
       - name: Deploy JAR
         run: |
           rsync -v ci-cd-test.jar server:~/app
-
       - name: Start App
         run: ssh server "nohup java -jar ~/app/ci-cd-test.jar > output.$(date --iso).log 2>&1 &"
 
